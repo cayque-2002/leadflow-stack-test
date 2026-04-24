@@ -1,9 +1,9 @@
-﻿using LeadFlow.Api.Entities;
+﻿using LeadFlow.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
-namespace LeadFlow.Api.Data;
+namespace LeadFlow.Infra.Data;
 
 public class AppDbContext : DbContext
 {

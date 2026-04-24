@@ -1,4 +1,4 @@
-﻿namespace LeadFlow.Api.Enums;
+﻿namespace LeadFlow.Domain.Enums;
 
 public enum LeadStatus
 {

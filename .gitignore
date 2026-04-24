@@ -2,6 +2,8 @@
 bin/
 obj/
 
+.github/copilot-instructions.md
+
 # Node
 node_modules/
 dist/
@@ -23,3 +25,5 @@ Thumbs.db
 
 # DB
 *.db
+*.db-shm
+*.db-wal

@@ -1,6 +1,6 @@
-﻿using LeadFlow.Api.Enums;
+﻿using LeadFlow.Domain.Enums;
 
-namespace LeadFlow.Api.Entities;
+namespace LeadFlow.Domain.Entities;
 
 public class TaskItemEntity
 {
