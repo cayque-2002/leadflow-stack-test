@@ -14,12 +14,12 @@ dist/
 *.user
 *.suo
 
+# Logs
+*.log
+
 # OS
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Env
-.env
+# DB
+*.db
