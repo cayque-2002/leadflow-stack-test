@@ -1,0 +1,389 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="h3 mb-1">LeadFlow</h1>
+      <p class="text-muted mb-0">Gerenciamento de leads e tarefas</p>
+    </div>
+    <button class="btn btn-primary" (click)="openLeadModal()">
+      + Novo lead
+    </button>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">Filtros</div>
+
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <input
+            class="form-control"
+            placeholder="Buscar por nome ou e-mail"
+            [(ngModel)]="search"
+            name="search"
+          />
+        </div>
+
+        <div class="col-md-3">
+          <select
+            class="form-select"
+            [(ngModel)]="statusFilter"
+            name="statusFilter"
+          >
+            <option [ngValue]="null">Todos os status</option>
+            <option [ngValue]="LeadStatus.New">Novo</option>
+            <option [ngValue]="LeadStatus.Contacted">Contatado</option>
+            <option [ngValue]="LeadStatus.Qualified">Qualificado</option>
+            <option [ngValue]="LeadStatus.Lost">Perdido</option>
+          </select>
+        </div>
+
+        <div class="col-md-3 d-flex gap-2">
+          <button class="btn btn-outline-primary w-100" (click)="loadLeads()">
+            Filtrar
+          </button>
+
+          <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+            Limpar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Leads</div>
+
+    <div class="card-body">
+      <div *ngIf="loading" class="text-muted">
+        Carregando...
+      </div>
+
+      <div *ngIf="!loading && leads.length === 0" class="text-muted">
+        Nenhum lead encontrado.
+      </div>
+
+      <div *ngIf="!loading && leads.length > 0" class="table-responsive">
+       <div class="card shadow-sm border-0">
+          <div class="card-header bg-white border-0">
+            <h5 class="mb-0">Pipeline de Leads</h5>
+            <small class="text-muted">Acompanhe os leads por status</small>
+          </div>
+
+          <div class="card-body">
+            <div *ngIf="loading" class="text-muted">
+              Carregando...
+            </div>
+
+            <div *ngIf="!loading && leads.length === 0" class="text-muted">
+              Nenhum lead encontrado.
+            </div>
+
+            <div *ngIf="!loading && leads.length > 0" class="kanban-board">
+              <div class="kanban-column">
+                <div class="kanban-column-header status-new">
+                  Novo
+                  <span>{{ getLeadsByStatus(LeadStatus.New).length }}</span>
+                </div>
+
+                <div
+                  class="lead-card"
+                  *ngFor="let lead of getLeadsByStatus(LeadStatus.New)"
+                  [class.selected]="selectedLead?.id === lead.id"
+                >
+                  <div class="lead-card-title">{{ lead.name }}</div>
+                  <div class="lead-card-email">{{ lead.email }}</div>
+
+                  <div class="lead-card-footer">
+                    <span>{{ lead.tasksCount }} tarefa(s)</span>
+                    <span>{{ lead.updatedAt | date: 'dd/MM HH:mm' }}</span>
+                  </div>
+
+                  <div class="lead-actions">
+                    <button class="btn btn-sm btn-outline-dark" type="button" (click)="openTaskModal(lead)">
+                      Tarefas
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" (click)="edit(lead)">
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="delete(lead.id)">
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kanban-column">
+                <div class="kanban-column-header status-contacted">
+                  Contatado
+                  <span>{{ getLeadsByStatus(LeadStatus.Contacted).length }}</span>
+                </div>
+
+                <div
+                  class="lead-card"
+                  *ngFor="let lead of getLeadsByStatus(LeadStatus.Contacted)"
+                  [class.selected]="selectedLead?.id === lead.id"
+                >
+                  <div class="lead-card-title">{{ lead.name }}</div>
+                  <div class="lead-card-email">{{ lead.email }}</div>
+
+                  <div class="lead-card-footer">
+                    <span>{{ lead.tasksCount }} tarefa(s)</span>
+                    <span>{{ lead.updatedAt | date: 'dd/MM HH:mm' }}</span>
+                  </div>
+
+                  <div class="lead-actions">
+                    <button class="btn btn-sm btn-outline-dark" (click)="loadTasks(lead)">
+                      Tarefas
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" (click)="edit(lead)">
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="delete(lead.id)">
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kanban-column">
+                <div class="kanban-column-header status-qualified">
+                  Qualificado
+                  <span>{{ getLeadsByStatus(LeadStatus.Qualified).length }}</span>
+                </div>
+
+                <div
+                  class="lead-card"
+                  *ngFor="let lead of getLeadsByStatus(LeadStatus.Qualified)"
+                  [class.selected]="selectedLead?.id === lead.id"
+                >
+                  <div class="lead-card-title">{{ lead.name }}</div>
+                  <div class="lead-card-email">{{ lead.email }}</div>
+
+                  <div class="lead-card-footer">
+                    <span>{{ lead.tasksCount }} tarefa(s)</span>
+                    <span>{{ lead.updatedAt | date: 'dd/MM HH:mm' }}</span>
+                  </div>
+
+                  <div class="lead-actions">
+                    <button class="btn btn-sm btn-outline-dark" (click)="openTaskModal(lead)">
+                      Tarefas
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" (click)="edit(lead)">
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="delete(lead.id)">
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="kanban-column">
+                <div class="kanban-column-header status-lost">
+                  Perdido
+                  <span>{{ getLeadsByStatus(LeadStatus.Lost).length }}</span>
+                </div>
+
+                <div
+                  class="lead-card"
+                  *ngFor="let lead of getLeadsByStatus(LeadStatus.Lost)"
+                  [class.selected]="selectedLead?.id === lead.id"
+                >
+                  <div class="lead-card-title">{{ lead.name }}</div>
+                  <div class="lead-card-email">{{ lead.email }}</div>
+
+                  <div class="lead-card-footer">
+                    <span>{{ lead.tasksCount }} tarefa(s)</span>
+                    <span>{{ lead.updatedAt | date: 'dd/MM HH:mm' }}</span>
+                  </div>
+
+                  <div class="lead-actions">
+                    <button class="btn btn-sm btn-outline-dark" type="button" (click)="openTaskModal(lead)">
+                      Tarefas
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" (click)="edit(lead)">
+                      Editar
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="delete(lead.id)">
+                      Excluir
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL LEADS -->
+<div *ngIf="showLeadModal" class="modal-backdrop-custom">
+  <div class="modal-card">
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+     {{ successMessage }}
+    </div>
+
+    <div class="modal-header-custom">
+      <div class="modal-title-group">
+        <h5 class="mb-0">{{ selectedLead ? 'Editar lead' : 'Novo lead' }}</h5>
+        <small class="text-muted" *ngIf="selectedLead">
+          Lead: {{ selectedLead.name }}
+        </small>
+      </div>
+
+      <button class="modal-close-btn" (click)="closeLeadModal()">✕</button>
+    </div>
+
+    <form (ngSubmit)="save()">
+      <div class="modal-body-custom">
+        <label class="form-label">Nome</label>
+        <input class="form-control mb-3" name="name" [(ngModel)]="form.name" required />
+
+        <label class="form-label">E-mail</label>
+        <input class="form-control mb-3" name="email" [(ngModel)]="form.email" required />
+
+        <label class="form-label">Status</label>
+        <select class="form-select" name="status" [(ngModel)]="form.status">
+          <option [ngValue]="LeadStatus.New">Novo</option>
+          <option [ngValue]="LeadStatus.Contacted">Contatado</option>
+          <option [ngValue]="LeadStatus.Qualified">Qualificado</option>
+          <option [ngValue]="LeadStatus.Lost">Perdido</option>
+        </select>
+      </div>
+
+      <div class="modal-footer-custom">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeLeadModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">
+          {{ selectedLead ? 'Salvar alterações' : 'Criar lead' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal task -->
+<div *ngIf="showTaskModal && selectedLead" class="modal-backdrop-custom">
+  <div class="modal-card modal-card-large">
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div class="modal-header-custom">
+      <div class="modal-title-group">
+        <h5 class="mb-1">{{ selectedTask ? 'Editar tarefa' : 'Tarefas' }}</h5>
+        <small class="text-muted" *ngIf="selectedTask">
+          Lead: {{ selectedTask.title }}
+        </small>
+      </div>
+
+      <button class="modal-close-btn" (click)="closeTaskModal()">✕</button>
+    </div>
+
+    <div class="modal-body-custom">
+      <form (ngSubmit)="saveTask()" class="mb-4">
+        <div class="row g-3 align-items-end">
+          <div class="col-md-5">
+            <label class="form-label">Título</label>
+            <input
+              class="form-control"
+              name="taskTitle"
+              [(ngModel)]="taskForm.title"
+              placeholder="Ex: Entrar em contato"
+              required
+            />
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Data limite</label>
+            <input
+              class="form-control"
+              type="date"
+              name="taskDueDate"
+              [(ngModel)]="taskForm.dueDate"
+            />
+          </div>
+
+          <div class="col-md-2">
+            <label class="form-label">Status</label>
+            <select
+              class="form-select"
+              name="taskStatus"
+              [(ngModel)]="taskForm.status"
+            >
+              <option [ngValue]="TaskStatus.Pending">Pendente</option>
+              <option [ngValue]="TaskStatus.Completed">Concluída</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-success" type="submit">
+              {{ selectedTask ? 'Salvar' : 'Criar' }}
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div *ngIf="selectedLeadTasks.length === 0" class="text-muted">
+        Nenhuma tarefa cadastrada para este lead.
+      </div>
+
+      <div *ngIf="selectedLeadTasks.length > 0" class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Data limite</th>
+              <th>Status</th>
+              <th>Atualizado em</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let task of selectedLeadTasks">
+              <td>{{ task.title }}</td>
+              <td>{{ task.dueDate ? (task.dueDate | date: 'dd/MM/yyyy') : '-' }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-warning text-dark': task.status === TaskStatus.Pending,
+                    'bg-success': task.status === TaskStatus.Completed
+                  }"
+                >
+                  {{ task.status === TaskStatus.Pending ? 'Pendente' : 'Concluída' }}
+                </span>
+              </td>
+              <td>{{ task.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="editTask(task)">
+                  Editar
+                </button>
+
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)">
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer-custom">
+      <button class="btn btn-outline-secondary" (click)="closeTaskModal()">
+        Fechar
+      </button>
+    </div>
+  </div>
+</div>

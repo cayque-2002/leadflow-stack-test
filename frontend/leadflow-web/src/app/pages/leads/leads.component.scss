@@ -1,0 +1,272 @@
+:host {
+  display: block;
+  background: #0f172a; // fundo principal (azul escuro suave)
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+
+.text-muted {
+  color: #94a3b8 !important;
+}
+
+/* CARDS */
+
+.card {
+  background: #1e293b;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+}
+
+/* KANBAN */
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.kanban-column {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 12px;
+  border: 1px solid #334155;
+}
+
+/* HEADER DAS COLUNAS */
+
+.kanban-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  background: #0f172a;
+}
+
+.kanban-column-header span {
+  background: #334155;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* CARDS DOS LEADS */
+
+.card-header {
+  background: #1e293b !important;
+  color: #e2e8f0;
+  border-bottom: 1px solid #334155;
+}
+
+.lead-card {
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #334155;
+  transition: 0.2s ease;
+}
+
+.lead-card:hover {
+  transform: translateY(-2px);
+  border-color: #3b82f6;
+}
+
+.lead-card.selected {
+  border: 2px solid #3b82f6;
+}
+
+.lead-card-title {
+  font-weight: 600;
+}
+
+.lead-card-email {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.lead-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 10px;
+  color: #94a3b8;
+}
+
+.lead-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* STATUS COLORS (suaves) */
+
+.status-new {
+  color: #94a3b8;
+}
+
+.status-contacted {
+  color: #38bdf8;
+}
+
+.status-qualified {
+  color: #4ade80;
+}
+
+.status-lost {
+  color: #f87171;
+}
+
+/* BOTÕES */
+
+.btn {
+  border-radius: 8px;
+}
+
+.btn-outline-dark {
+  border-color: #94a3b8;
+  color: #e2e8f0;
+}
+
+.btn-outline-dark:hover {
+  background: #334155;
+  border-color: #cbd5e1;
+  color: #ffffff;
+}
+
+.btn-outline-secondary {
+  border-color: #64748b;
+  color: #cbd5e1;
+}
+
+.btn-outline-secondary:hover {
+  background: #475569;
+  color: #ffffff;
+}
+
+.btn-outline-primary {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.btn-outline-primary:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-outline-danger {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.btn-outline-danger:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* FORM */
+
+input,
+select {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+input::placeholder {
+  color: #64748b;
+}
+
+/*MODAL*/
+
+.modal-card-large {
+  max-width: 1200px;
+  width: 120vw;
+}
+
+
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 16px;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 900px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  color: #e2e8f0;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header-custom,
+.modal-footer-custom {
+  padding: 16px 20px;
+  border-bottom: 1px solid #334155;
+}
+
+.modal-footer-custom {
+  border-bottom: 0;
+  border-top: 1px solid #334155;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-body-custom {
+  padding: 24px;
+}
+
+.modal-header-custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #334155;
+}
+
+.modal-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: #f1f5f9;
+}
+
+
+
+/* RESPONSIVO */
+
+@media (max-width: 992px) {
+  .kanban-board {
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+}
