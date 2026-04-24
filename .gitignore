@@ -16,6 +16,9 @@ dist/
 *.user
 *.suo
 
+# VSCODE
+**/.vscode/mcp.json
+
 # Logs
 *.log
 
