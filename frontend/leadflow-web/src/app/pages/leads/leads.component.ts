@@ -146,12 +146,13 @@ export class LeadsComponent implements OnInit {
             this.showSuccess('Tarefa atualizada.');
             this.resetTaskForm();
             this.loadTasks(this.selectedLead!);
-            this.loadLeads();
           },
           error: () => {
             this.showError('Erro ao atualizar tarefa.');
           }
         });
+
+        this.loadLeads();
 
       return;
     }
@@ -167,6 +168,7 @@ export class LeadsComponent implements OnInit {
         this.showSuccess('Tarefa criada.');
         this.resetTaskForm();
         this.loadTasks(this.selectedLead!);
+        this.loadLeads();
       },
       error: () => {
         this.showError('Erro ao criar tarefa.');
@@ -223,6 +225,7 @@ export class LeadsComponent implements OnInit {
         next: () => {
           this.showSuccess('Tarefa excluída.');
           this.loadTasks(this.selectedLead!);
+          this.loadLeads();
         },
         error: () => {
           this.showError('Erro ao excluir tarefa.');

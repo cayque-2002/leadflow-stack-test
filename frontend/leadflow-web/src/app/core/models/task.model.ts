@@ -10,7 +10,7 @@ export interface TaskItem {
   updatedAt: string;
 }
 
-export interface TaskCreate {
+export interface TaskCreate {   
   title: string;
   dueDate: string | null;
   status?: TaskStatus | null;
