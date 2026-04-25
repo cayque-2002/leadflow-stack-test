@@ -225,7 +225,7 @@ export class LeadsComponent implements OnInit {
         next: () => {
           this.showSuccess('Tarefa excluída.');
           this.loadTasks(this.selectedLead!);
-          this.loadLeads();
+          this.loadLeads(); 
         },
         error: () => {
           this.showError('Erro ao excluir tarefa.');
